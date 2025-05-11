@@ -2,7 +2,7 @@ package org.yez.petbackend.service.user;
 
 import org.springframework.stereotype.Service;
 import org.yez.petbackend.repository.user.UserRepository;
-import org.yez.petbackend.service.auth.UserNotExisted;
+import org.yez.petbackend.service.auth.UserNotExistedException;
 
 import java.util.UUID;
 
@@ -13,7 +13,7 @@ public record AdminServiceImpl(
 
     @Override
     public void approveUser(final UUID userId) {
-        var user = userRepository.findById(userId).orElseThrow(UserNotExisted::new);
+        var user = userRepository.findById(userId).orElseThrow(UserNotExistedException::new);
         user.setApproved(true);
         userRepository.save(user);
     }

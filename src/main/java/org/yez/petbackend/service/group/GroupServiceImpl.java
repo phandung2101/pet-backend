@@ -5,11 +5,13 @@ import org.yez.petbackend.repository.group.GroupEntity;
 import org.yez.petbackend.repository.group.GroupRepository;
 import org.yez.petbackend.repository.user.UserEntity;
 import org.yez.petbackend.repository.user.UserRepository;
+import org.yez.petbackend.service.auth.UserNotExistedException;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
-public record GroupServiceImpl(
+record GroupServiceImpl(
         UserRepository userRepository,
         GroupRepository groupRepository
 ) implements GroupService {
@@ -26,13 +28,53 @@ public record GroupServiceImpl(
     }
 
     @Override
-    public GroupEntity createDefault(final UserEntity owner) {
+    public GroupEntity getById(final UUID groupId) {
+        return groupRepository.findById(groupId).orElseThrow(GroupNotExistedException::new);
+    }
+
+    @Override
+    public void createDefault(final UserEntity owner) {
         final var groupEntity = new GroupEntity();
         groupEntity.setName("%s's personal group".formatted(owner.getUsername()));
         groupEntity.setDescription("This is personal group");
         groupEntity.setOwner(owner);
         groupEntity.setMembers(List.of(owner));
 
-        return groupRepository.save(groupEntity);
+        groupRepository.save(groupEntity);
+    }
+
+    @Override
+    public void addMember(final UUID groupId, final UUID memberId) {
+        final var group = groupRepository.findById(groupId).orElseThrow(GroupNotExistedException::new);
+        if (group.getMembers().stream().anyMatch(mem -> mem.getId() == memberId)) {
+            return;
+        }
+        final var newMember = userRepository.findById(memberId).orElseThrow(UserNotExistedException::new);
+        group.getMembers().add(newMember);
+        groupRepository.save(group);
+    }
+
+    @Override
+    public void removeMember(final UUID groupId, final UUID memberId) {
+        final var group = groupRepository.findById(groupId).orElseThrow(GroupNotExistedException::new);
+        if (group.getMembers().stream().noneMatch(mem -> mem.getId() == memberId)) {
+            return;
+        }
+        final var removeMember = userRepository.findById(memberId).orElseThrow(UserNotExistedException::new);
+        group.getMembers().removeIf(mem -> mem.getId() == removeMember.getId());
+        groupRepository.save(group);
+    }
+
+    @Override
+    public void deleteGroup(final UUID groupId) {
+        groupRepository.deleteById(groupId);
+    }
+
+    @Override
+    public void updateGroup(final UUID groupId, final GroupUpdateRequestDto groupUpdateRequestDto) {
+        final var group = groupRepository.findById(groupId).orElseThrow(GroupNotExistedException::new);
+        group.setName(group.getName());
+        group.setDescription(group.getDescription());
+        groupRepository.save(group);
     }
 }

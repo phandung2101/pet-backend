@@ -38,8 +38,8 @@ record AuthServiceImpl(
 
     @Override
     public LoginResponseDto login(final LoginRequestDto request) {
-        var user = userRepository.findByUsername(request.username()).orElseThrow(UserNotExisted::new);
-        if (!user.isApproved()) throw new UserNotExisted();
+        var user = userRepository.findByUsername(request.username()).orElseThrow(UserNotExistedException::new);
+        if (!user.isApproved()) throw new UserNotExistedException();
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
             throw new UserPasswordNotMatched();
         }
