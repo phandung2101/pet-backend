@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class TransactionQueryImpl implements TransactionQuery {
+class TransactionQueryImpl implements TransactionQuery {
     private final TransactionRepository transactionRepository;
 
     @Override

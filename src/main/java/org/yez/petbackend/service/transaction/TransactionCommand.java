@@ -4,7 +4,7 @@ import org.yez.petbackend.domain.transaction.Transaction;
 
 import java.util.UUID;
 
-public interface TransactionCommand {
+interface TransactionCommand {
 
     Transaction create(final CreateTransactionDto createTransactionDto);
 

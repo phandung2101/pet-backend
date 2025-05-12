@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.yez.petbackend.repository.user.UserEntity;
 
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -29,7 +29,7 @@ public class GroupEntity {
             joinColumns = @JoinColumn(name = "group_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private List<UserEntity> members;
+    private Set<UserEntity> members;
 
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)

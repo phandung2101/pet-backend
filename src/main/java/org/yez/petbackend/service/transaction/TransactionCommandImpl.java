@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class TransactionCommandImpl implements TransactionCommand {
+class TransactionCommandImpl implements TransactionCommand {
     private final TransactionRepository transactionRepository;
 
     @Override

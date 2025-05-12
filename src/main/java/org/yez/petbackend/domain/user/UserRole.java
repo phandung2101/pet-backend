@@ -1,4 +1,4 @@
-package org.yez.petbackend.repository.user;
+package org.yez.petbackend.domain.user;
 
 import org.springframework.security.core.GrantedAuthority;
 

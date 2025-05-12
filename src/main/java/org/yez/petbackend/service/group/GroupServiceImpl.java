@@ -8,6 +8,7 @@ import org.yez.petbackend.repository.user.UserRepository;
 import org.yez.petbackend.service.auth.UserNotExistedException;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -16,13 +17,13 @@ record GroupServiceImpl(
         GroupRepository groupRepository
 ) implements GroupService {
 
-    @Override
-    public GroupEntity create(final GroupCreateRequestDto groupCreateRequestDto, final UserEntity owner) {
+    public GroupEntity create(final CreateGroupRequest createGroupRequest, final UUID ownerId) {
         final var groupEntity = new GroupEntity();
-        groupEntity.setName(groupCreateRequestDto.name());
-        groupEntity.setDescription(groupCreateRequestDto.description());
-        groupEntity.setOwner(owner);
-        groupEntity.setMembers(List.of(owner));
+        final var userEntity = new UserEntity(ownerId);
+        groupEntity.setName(createGroupRequest.name());
+        groupEntity.setDescription(createGroupRequest.description());
+        groupEntity.setOwner(userEntity);
+        groupEntity.setMembers(Set.of(userEntity));
 
         return groupRepository.save(groupEntity);
     }
@@ -33,12 +34,17 @@ record GroupServiceImpl(
     }
 
     @Override
+    public List<GroupEntity> getAll(final UUID userId) {
+        return groupRepository.findAllByMembers_Id(userId);
+    }
+
+    @Override
     public void createDefault(final UserEntity owner) {
         final var groupEntity = new GroupEntity();
         groupEntity.setName("%s's personal group".formatted(owner.getUsername()));
         groupEntity.setDescription("This is personal group");
         groupEntity.setOwner(owner);
-        groupEntity.setMembers(List.of(owner));
+        groupEntity.setMembers(Set.of(owner));
 
         groupRepository.save(groupEntity);
     }
@@ -46,7 +52,7 @@ record GroupServiceImpl(
     @Override
     public void addMember(final UUID groupId, final UUID memberId) {
         final var group = groupRepository.findById(groupId).orElseThrow(GroupNotExistedException::new);
-        if (group.getMembers().stream().anyMatch(mem -> mem.getId() == memberId)) {
+        if (group.getMembers().stream().anyMatch(mem -> mem.getId().equals(memberId))) {
             return;
         }
         final var newMember = userRepository.findById(memberId).orElseThrow(UserNotExistedException::new);
@@ -57,11 +63,11 @@ record GroupServiceImpl(
     @Override
     public void removeMember(final UUID groupId, final UUID memberId) {
         final var group = groupRepository.findById(groupId).orElseThrow(GroupNotExistedException::new);
-        if (group.getMembers().stream().noneMatch(mem -> mem.getId() == memberId)) {
+        if (group.getMembers().stream().noneMatch(mem -> mem.getId().equals(memberId))) {
             return;
         }
         final var removeMember = userRepository.findById(memberId).orElseThrow(UserNotExistedException::new);
-        group.getMembers().removeIf(mem -> mem.getId() == removeMember.getId());
+        group.getMembers().removeIf(mem -> mem.getId().equals(removeMember.getId()));
         groupRepository.save(group);
     }
 
@@ -73,8 +79,8 @@ record GroupServiceImpl(
     @Override
     public void updateGroup(final UUID groupId, final GroupUpdateRequestDto groupUpdateRequestDto) {
         final var group = groupRepository.findById(groupId).orElseThrow(GroupNotExistedException::new);
-        group.setName(group.getName());
-        group.setDescription(group.getDescription());
+        group.setName(groupUpdateRequestDto.name());
+        group.setDescription(groupUpdateRequestDto.description());
         groupRepository.save(group);
     }
 }

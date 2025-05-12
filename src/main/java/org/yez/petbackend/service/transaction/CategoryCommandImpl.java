@@ -10,7 +10,7 @@ import org.yez.petbackend.repository.category.CategoryRepository;
 
 @Service
 @AllArgsConstructor
-public class CategoryCommandImpl implements CategoryCommand {
+class CategoryCommandImpl implements CategoryCommand {
     private final CategoryRepository categoryRepository;
 
     @Override

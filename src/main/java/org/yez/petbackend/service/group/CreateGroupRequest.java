@@ -1,6 +1,6 @@
 package org.yez.petbackend.service.group;
 
-public record GroupCreateRequestDto(
+public record CreateGroupRequest(
         String name,
         String description
 ) {

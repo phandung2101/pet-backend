@@ -6,7 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.yez.petbackend.repository.user.UserEntity;
 import org.yez.petbackend.repository.user.UserRepository;
-import org.yez.petbackend.repository.user.UserRole;
+import org.yez.petbackend.domain.user.UserRole;
 import org.yez.petbackend.security.JwtService;
 import org.yez.petbackend.security.PetUser;
 import org.yez.petbackend.service.group.GroupService;
@@ -51,6 +51,6 @@ record AuthServiceImpl(
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         var user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("username not found"));
-        return new PetUser(user);
+        return new PetUser(user.getId(), user.getUsername(), user.getPassword(), user.getRole());
     }
 }

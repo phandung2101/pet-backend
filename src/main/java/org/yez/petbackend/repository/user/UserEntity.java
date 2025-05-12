@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.yez.petbackend.domain.user.UserRole;
 import org.yez.petbackend.repository.group.GroupEntity;
 
 import java.time.Instant;

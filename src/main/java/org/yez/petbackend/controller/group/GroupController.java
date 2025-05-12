@@ -8,6 +8,7 @@ import org.yez.petbackend.repository.user.UserEntity;
 import org.yez.petbackend.security.PetUser;
 import org.yez.petbackend.service.group.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -20,11 +21,16 @@ class GroupController {
         this.groupService = groupService;
     }
 
-    @PostMapping
-    public GroupCreateResponse create(@RequestBody GroupCreateRequestDto req,
-                                      @AuthenticationPrincipal PetUser user) {
-        var group = groupService.create(req, user.user());
-        return new GroupCreateResponse(group.getName(), group.getDescription());
+    @GetMapping
+    public List<GroupResponse> getAll(@AuthenticationPrincipal PetUser user) {
+        return groupService.getAll(user.id()).stream()
+                .map(group -> new GroupResponse(
+                        group.getName(),
+                        group.getDescription(),
+                        group.getMembers().stream().map(UserEntity::getUsername).toList(),
+                        group.getOwner().getUsername()
+                ))
+                .toList();
     }
 
     @GetMapping("/{groupId}")
@@ -37,6 +43,13 @@ class GroupController {
                 group.getMembers().stream().map(UserEntity::getUsername).toList(),
                 group.getOwner().getUsername()
         );
+    }
+
+    @PostMapping
+    public GroupCreateResponse create(@RequestBody CreateGroupRequest req,
+                                      @AuthenticationPrincipal PetUser user) {
+        var group = groupService.create(req, user.id());
+        return new GroupCreateResponse(group.getName(), group.getDescription());
     }
 
     @PutMapping("/{groupId}")
@@ -52,10 +65,10 @@ class GroupController {
         groupService.deleteGroup(UUID.fromString(groupId));
     }
 
-    @PostMapping("/{groupId}/members/{userId}")
+    @PostMapping("/{groupId}/members")
     @PreAuthorize("@groupAuthorizer.isOwner(#groupId)")
-    public void addMember(@PathVariable String groupId, @PathVariable String userId) {
-        groupService.addMember(UUID.fromString(groupId), UUID.fromString(userId));
+    public void addMember(@PathVariable String groupId, @RequestBody AddMemberGroupRequest addMemberGroupRequest) {
+        groupService.addMember(UUID.fromString(groupId), addMemberGroupRequest.userId());
     }
 
     @DeleteMapping("/{groupId}/members/{userId}")
@@ -66,9 +79,11 @@ class GroupController {
 
     @ExceptionHandler(GroupNotExistedException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public void handleGroupNotExisted() {}
+    public void handleGroupNotExisted() {
+    }
 
     @ExceptionHandler(NotGroupOwnerException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public void handleNotGroupOwner() {}
+    public void handleNotGroupOwner() {
+    }
 }
