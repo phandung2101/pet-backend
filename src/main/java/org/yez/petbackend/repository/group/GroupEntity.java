@@ -2,6 +2,7 @@ package org.yez.petbackend.repository.group;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.yez.petbackend.repository.user.UserEntity;
 
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Setter
 @Getter
 @Table(name = "groups")
+@NoArgsConstructor
 public class GroupEntity {
 
     @Id
@@ -34,4 +36,8 @@ public class GroupEntity {
     private UserEntity owner;
 
     private String description;
+
+    public GroupEntity(UUID id) {
+        this.id = id;
+    }
 }

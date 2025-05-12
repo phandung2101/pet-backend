@@ -3,12 +3,13 @@ package org.yez.petbackend.repository.transaction;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.yez.petbackend.domain.transaction.TransactionType;
 import org.yez.petbackend.repository.category.CategoryEntity;
-import org.yez.petbackend.repository.user.UserEntity;
 import org.yez.petbackend.repository.group.GroupEntity;
+import org.yez.petbackend.repository.user.UserEntity;
 
 import java.time.Instant;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -30,6 +31,9 @@ public class TransactionEntity {
     private GroupEntity group;
 
     @Column(nullable = false)
+    private Instant transactionTime;
+
+    @Column(nullable = false)
     private double amount;
 
     @Column(nullable = false)
@@ -45,10 +49,7 @@ public class TransactionEntity {
             joinColumns = @JoinColumn(name = "transaction_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-    private List<CategoryEntity> categories;
-
-    @Column(nullable = false)
-    private Instant transactionTime;
+    private Set<CategoryEntity> categories;
 
     @Column(nullable = false, updatable = false)
     private Instant createdAt;

@@ -1,6 +1,6 @@
 package org.yez.petbackend.controller.group;
 
-record GroupCreateResponseDto(
+record GroupCreateResponse(
         String name,
         String description
 ) {

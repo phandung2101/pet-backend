@@ -2,6 +2,7 @@ package org.yez.petbackend.repository.category;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.UUID;
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Table(name = "categories", indexes = {
     @Index(name = "idx_name", columnList = "name", unique = true)
 })
+@NoArgsConstructor
 public class CategoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,4 +23,8 @@ public class CategoryEntity {
     private String name;
 
     private String universalName;
+
+    public CategoryEntity(UUID id) {
+        this.id = id;
+    }
 }

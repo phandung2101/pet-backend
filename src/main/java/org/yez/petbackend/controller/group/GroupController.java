@@ -21,10 +21,10 @@ class GroupController {
     }
 
     @PostMapping
-    public GroupCreateResponseDto create(@RequestBody GroupCreateRequestDto req,
-                                         @AuthenticationPrincipal PetUser user) {
+    public GroupCreateResponse create(@RequestBody GroupCreateRequestDto req,
+                                      @AuthenticationPrincipal PetUser user) {
         var group = groupService.create(req, user.user());
-        return new GroupCreateResponseDto(group.getName(), group.getDescription());
+        return new GroupCreateResponse(group.getName(), group.getDescription());
     }
 
     @GetMapping("/{groupId}")

@@ -2,6 +2,7 @@ package org.yez.petbackend.repository.user;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.yez.petbackend.repository.group.GroupEntity;
 
@@ -13,6 +14,7 @@ import java.util.UUID;
 @Table(name = "users")
 @Setter
 @Getter
+@NoArgsConstructor
 public class UserEntity {
 
     @Id
@@ -63,4 +65,7 @@ public class UserEntity {
         updatedAt = Instant.now();
     }
 
+    public UserEntity(UUID id) {
+        this.id = id;
+    }
 }

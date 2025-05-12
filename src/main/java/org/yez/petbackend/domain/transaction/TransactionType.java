@@ -1,4 +1,4 @@
-package org.yez.petbackend.repository.transaction;
+package org.yez.petbackend.domain.transaction;
 
 public enum TransactionType {
     EXPENSE,

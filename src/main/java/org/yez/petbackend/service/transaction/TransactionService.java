@@ -1,25 +1,27 @@
 package org.yez.petbackend.service.transaction;
 
-import org.yez.petbackend.repository.transaction.TransactionEntity;
+import org.yez.petbackend.controller.transaction.CreateTransactionRequest;
+import org.yez.petbackend.controller.transaction.ModifyTransactionRequest;
+import org.yez.petbackend.domain.transaction.Transaction;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface TransactionService {
 
-    TransactionEntity create(
+    Transaction create(
             UUID groupId,
             UUID userId,
-            TransactionCreateRequestDto transactionCreateRequestDto
+            CreateTransactionRequest createTransactionRequest
     );
 
-    List<TransactionEntity> getAll(UUID groupId);
+    List<Transaction> getAll(UUID groupId);
 
-    TransactionEntity getOne(UUID groupId, UUID transactionId);
+    Transaction getOne(UUID groupId, UUID transactionId);
 
     void update(
             UUID groupId,
-            TransactionUpdateRequestDto transactionUpdateRequestDto
+            final UUID transactionId, ModifyTransactionRequest modifyTransactionRequest
     );
 
     void delete(
