@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.yez.petbackend.domain.transaction.Category;
-import org.yez.petbackend.domain.transaction.CategoryMapper;
 import org.yez.petbackend.repository.category.CategoryEntity;
 import org.yez.petbackend.repository.category.CategoryRepository;
 
@@ -26,6 +25,6 @@ class CategoryCommandImpl implements CategoryCommand {
                     }
                 });
 
-        return CategoryMapper.mapperFromEntity(entity);
+        return new Category(entity);
     }
 }

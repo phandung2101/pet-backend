@@ -1,6 +1,10 @@
 package org.yez.petbackend.service.group;
 
-public record GroupUpdateRequestDto(
+import java.util.UUID;
+
+record UpdateGroupDto(
+        UUID groupId,
+        UUID ownerId,
         String name,
         String description
 ) {

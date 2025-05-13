@@ -25,9 +25,13 @@ class AuthController {
         return authService.login(request);
     }
 
-    @ExceptionHandler(UserNotExistedException.class)
+    @ExceptionHandler({UserNotExistedException.class, UserPasswordNotMatched.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     void handleNotExistUser() {
+    }
 
+    @ExceptionHandler(UsernameOrEmailExisted.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    void handleRegisterDuplicate() {
     }
 }

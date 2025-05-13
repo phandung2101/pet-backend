@@ -1,4 +1,4 @@
-package org.yez.petbackend.service.group;
+package org.yez.petbackend.controller.group;
 
 public record CreateGroupRequest(
         String name,

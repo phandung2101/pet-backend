@@ -16,13 +16,13 @@ record GroupAuthorizerImpl(
     public boolean isOwner(String groupId) {
         var currentUser = (PetUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         var group = groupRepository.findById(UUID.fromString(groupId)).orElseThrow(NotGroupOwnerException::new);
-        return group.getOwner().getId().equals(currentUser.id());
+        return group.getOwner().getId().equals(currentUser.getId());
     }
 
     @Override
     public boolean isMember(String groupId) {
         var currentUser = (PetUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         var group = groupRepository.findById(UUID.fromString(groupId)).orElseThrow(NotGroupOwnerException::new);
-        return group.getMembers().stream().anyMatch(it -> it.getId().equals(currentUser.id()));
+        return group.getMembers().stream().anyMatch(it -> it.getId().equals(currentUser.getId()));
     }
 }

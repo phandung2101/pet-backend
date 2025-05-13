@@ -1,26 +1,27 @@
 package org.yez.petbackend.service.group;
 
-import org.yez.petbackend.repository.group.GroupEntity;
-import org.yez.petbackend.repository.user.UserEntity;
+import org.yez.petbackend.controller.group.CreateGroupRequest;
+import org.yez.petbackend.controller.group.GroupUpdateRequest;
+import org.yez.petbackend.domain.group.Group;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface GroupService {
 
-    GroupEntity create(CreateGroupRequest createGroupRequest, UUID ownerId);
+    Group create(CreateGroupRequest createGroupRequest, UUID ownerId);
 
-    GroupEntity getById(UUID groupId);
+    Group getById(final UUID userId, UUID groupId);
 
-    List<GroupEntity> getAll(UUID userId);
+    List<Group> getAll(UUID userId);
 
-    void createDefault(UserEntity owner);
+    void createDefault(UUID ownerId, String username);
 
     void addMember(UUID groupId, UUID memberId);
 
     void removeMember(UUID groupId, UUID memberId);
 
-    void deleteGroup(UUID groupId);
+    void deleteGroup(final UUID ownerId, UUID groupId);
 
-    void updateGroup(UUID groupId, GroupUpdateRequestDto groupUpdateRequestDto);
+    void updateGroup(UUID ownerId, UUID groupId, GroupUpdateRequest groupUpdateRequest);
 }

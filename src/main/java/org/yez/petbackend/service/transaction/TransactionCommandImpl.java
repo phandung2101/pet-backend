@@ -3,7 +3,6 @@ package org.yez.petbackend.service.transaction;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.yez.petbackend.domain.transaction.Transaction;
-import org.yez.petbackend.domain.transaction.TransactionMapper;
 import org.yez.petbackend.repository.category.CategoryEntity;
 import org.yez.petbackend.repository.group.GroupEntity;
 import org.yez.petbackend.repository.transaction.TransactionEntity;
@@ -31,7 +30,7 @@ class TransactionCommandImpl implements TransactionCommand {
         entity.setDescription(createTransactionDto.description());
 
         transactionRepository.save(entity);
-        return TransactionMapper.mapFromEntity(entity);
+        return new Transaction(entity);
     }
 
     @Override

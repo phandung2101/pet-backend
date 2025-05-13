@@ -4,12 +4,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.yez.petbackend.domain.user.User;
+import org.yez.petbackend.domain.user.UserRole;
+import org.yez.petbackend.repository.group.GroupEntity;
 import org.yez.petbackend.repository.user.UserEntity;
 import org.yez.petbackend.repository.user.UserRepository;
-import org.yez.petbackend.domain.user.UserRole;
 import org.yez.petbackend.security.JwtService;
 import org.yez.petbackend.security.PetUser;
 import org.yez.petbackend.service.group.GroupService;
+
+import java.util.stream.Collectors;
 
 @Service
 record AuthServiceImpl(
@@ -33,7 +37,7 @@ record AuthServiceImpl(
         newUser.setFullName(request.fullName());
 
         userRepository.save(newUser);
-        groupService.createDefault(newUser);
+        groupService.createDefault(newUser.getId(), newUser.getUsername());
     }
 
     @Override
@@ -49,8 +53,18 @@ record AuthServiceImpl(
 
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        var user = userRepository.findByUsername(username)
+        var userEntity = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("username not found"));
-        return new PetUser(user.getId(), user.getUsername(), user.getPassword(), user.getRole());
+        var user = new User(
+                userEntity.getId(),
+                userEntity.getUsername(),
+                userEntity.getPassword(),
+                userEntity.getEmail(),
+                userEntity.getFullName(),
+                userEntity.getRole(),
+                userEntity.isApproved(),
+                userEntity.getGroups().stream().map(GroupEntity::getId).collect(Collectors.toSet())
+        );
+        return new PetUser(user);
     }
 }
