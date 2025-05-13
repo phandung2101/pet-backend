@@ -1,5 +1,7 @@
 package org.yez.petbackend.service.transaction;
 
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.yez.petbackend.domain.transaction.TransactionType;
 
 import java.time.Instant;
@@ -11,8 +13,8 @@ public record CreateTransactionDto(
         UUID groupId,
         float amount,
         String description,
-        TransactionType type,
-        Instant transactionTime,
-        Set<UUID> categoryIds
+        @Nullable TransactionType type,
+        @Nullable Instant transactionTime,
+        @Nullable Set<UUID> categoryIds
 ) {
 }

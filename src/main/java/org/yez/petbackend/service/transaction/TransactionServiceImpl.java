@@ -59,7 +59,7 @@ class TransactionServiceImpl implements TransactionService {
             final UUID transactionId,
             final UpdateTransactionRequest updateTransactionRequest
     ) {
-        transactionCommand.update(new ModifyTransactionDto(
+        transactionCommand.update(new UpdateTransactionDto(
                 groupId,
                 transactionId,
                 updateTransactionRequest.amount(),

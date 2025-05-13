@@ -5,7 +5,7 @@ import org.yez.petbackend.domain.transaction.TransactionType;
 import java.time.Instant;
 import java.util.UUID;
 
-public record ModifyTransactionDto(
+record UpdateTransactionDto(
         UUID transactionId,
         UUID groupId,
         float amount,

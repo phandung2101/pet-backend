@@ -8,7 +8,7 @@ interface TransactionCommand {
 
     Transaction create(final CreateTransactionDto createTransactionDto);
 
-    void update(final ModifyTransactionDto modifyTransactionDto);
+    void update(final UpdateTransactionDto updateTransactionDto);
 
     void delete(final UUID groupId, final UUID transactionId);
 }
