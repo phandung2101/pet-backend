@@ -1,6 +1,7 @@
 package org.yez.petbackend.controller.transaction;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ class TransactionController {
 
     @PostMapping
     @PreAuthorize("@groupAuthorizer.isMember(#groupId)")
+    @ResponseStatus(HttpStatus.CREATED)
     void create(
             @PathVariable UUID groupId,
             @AuthenticationPrincipal PetUser user,
@@ -53,7 +55,7 @@ class TransactionController {
     void update(
             @PathVariable UUID groupId,
             @PathVariable UUID transactionId,
-            UpdateTransactionRequest request
+            @RequestBody UpdateTransactionRequest request
     ) {
         transactionService.update(groupId, transactionId, request);
     }

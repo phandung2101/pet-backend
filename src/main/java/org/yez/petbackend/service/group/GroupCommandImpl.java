@@ -2,6 +2,7 @@ package org.yez.petbackend.service.group;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.yez.petbackend.domain.group.Group;
 import org.yez.petbackend.repository.group.GroupEntity;
 import org.yez.petbackend.repository.group.GroupRepository;
@@ -43,6 +44,7 @@ class GroupCommandImpl implements GroupCommand {
     }
 
     @Override
+    @Transactional
     public void delete(final UUID ownerId, final UUID groupId) {
         groupRepository.deleteByIdAndOwner_Id(groupId, ownerId);
     }

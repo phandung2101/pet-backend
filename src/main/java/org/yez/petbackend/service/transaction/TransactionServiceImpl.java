@@ -8,7 +8,9 @@ import org.yez.petbackend.controller.transaction.UpdateTransactionRequest;
 import org.yez.petbackend.domain.transaction.Category;
 import org.yez.petbackend.domain.transaction.Transaction;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -26,7 +28,8 @@ class TransactionServiceImpl implements TransactionService {
             final UUID userId,
             final CreateTransactionRequest createTransactionRequest
     ) {
-        final var categoryIds = createTransactionRequest.categories()
+        final var categoryIds = Optional.ofNullable(createTransactionRequest.categories())
+                .orElse(Collections.emptySet())
                 .stream()
                 .map(categoryCommand::findAndInsert)
                 .map(Category::id)
@@ -60,8 +63,8 @@ class TransactionServiceImpl implements TransactionService {
             final UpdateTransactionRequest updateTransactionRequest
     ) {
         transactionCommand.update(new UpdateTransactionDto(
-                groupId,
                 transactionId,
+                groupId,
                 updateTransactionRequest.amount(),
                 updateTransactionRequest.description(),
                 updateTransactionRequest.type(),

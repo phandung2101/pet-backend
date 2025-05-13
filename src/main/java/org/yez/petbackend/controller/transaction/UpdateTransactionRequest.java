@@ -5,7 +5,7 @@ import org.yez.petbackend.domain.transaction.TransactionType;
 import java.time.Instant;
 
 public record UpdateTransactionRequest(
-        float amount,
+        double amount,
         String description,
         TransactionType type,
         Instant transactionTime

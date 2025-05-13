@@ -8,7 +8,7 @@ import java.util.UUID;
 record UpdateTransactionDto(
         UUID transactionId,
         UUID groupId,
-        float amount,
+        double amount,
         String description,
         TransactionType type,
         Instant transactionTime

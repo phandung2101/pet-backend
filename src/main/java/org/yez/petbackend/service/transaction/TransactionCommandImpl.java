@@ -2,6 +2,7 @@ package org.yez.petbackend.service.transaction;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.yez.petbackend.domain.transaction.Transaction;
 import org.yez.petbackend.domain.transaction.TransactionType;
 import org.yez.petbackend.repository.category.CategoryEntity;
@@ -62,6 +63,7 @@ class TransactionCommandImpl implements TransactionCommand {
     }
 
     @Override
+    @Transactional
     public void delete(final UUID groupId, final UUID transactionId) {
         transactionRepository.deleteByGroup_IdAndId(groupId, transactionId);
     }

@@ -40,7 +40,7 @@ public class UserEntity {
     @Column(nullable = false)
     private boolean approved = false;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "group_members",
             joinColumns = @JoinColumn(name = "user_id"),
