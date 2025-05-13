@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.yez.petbackend.controller.transaction.CreateTransactionRequest;
-import org.yez.petbackend.controller.transaction.ModifyTransactionRequest;
+import org.yez.petbackend.controller.transaction.UpdateTransactionRequest;
 import org.yez.petbackend.domain.transaction.Category;
 import org.yez.petbackend.domain.transaction.Transaction;
 
@@ -44,12 +44,12 @@ class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<Transaction> getAll(final UUID groupId) {
+    public List<Transaction> findAll(final UUID groupId) {
         return transactionQuery.findAll(groupId);
     }
 
     @Override
-    public Transaction getOne(final UUID groupId, final UUID transactionId) {
+    public Transaction findOne(final UUID groupId, final UUID transactionId) {
         return transactionQuery.findOne(groupId, transactionId);
     }
 
@@ -57,15 +57,15 @@ class TransactionServiceImpl implements TransactionService {
     public void update(
             final UUID groupId,
             final UUID transactionId,
-            final ModifyTransactionRequest modifyTransactionRequest
+            final UpdateTransactionRequest updateTransactionRequest
     ) {
-        transactionCommand.modify(new ModifyTransactionDto(
+        transactionCommand.update(new ModifyTransactionDto(
                 groupId,
                 transactionId,
-                modifyTransactionRequest.amount(),
-                modifyTransactionRequest.description(),
-                modifyTransactionRequest.type(),
-                modifyTransactionRequest.transactionTime()
+                updateTransactionRequest.amount(),
+                updateTransactionRequest.description(),
+                updateTransactionRequest.type(),
+                updateTransactionRequest.transactionTime()
         ));
     }
 

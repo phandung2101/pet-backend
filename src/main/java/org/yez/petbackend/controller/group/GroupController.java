@@ -30,8 +30,8 @@ class GroupController {
 
 
     @GetMapping
-    public List<GroupResponse> getAll(@AuthenticationPrincipal PetUser user) {
-        return groupService.getAll(user.getId()).stream()
+    public List<GroupResponse> findAll(@AuthenticationPrincipal PetUser user) {
+        return groupService.findAll(user.getId()).stream()
                 .map(group -> new GroupResponse(
                         group.id().toString(),
                         group.name(),
@@ -44,8 +44,8 @@ class GroupController {
 
     @GetMapping("/{groupId}")
     @PreAuthorize("@groupAuthorizer.isMember(#groupId)")
-    public GroupResponse getGroupById(@AuthenticationPrincipal PetUser user, @PathVariable String groupId) {
-        var group = groupService.getById(user.getId(), UUID.fromString(groupId));
+    public GroupResponse findOne(@AuthenticationPrincipal PetUser user, @PathVariable String groupId) {
+        var group = groupService.findOne(user.getId(), UUID.fromString(groupId));
         return new GroupResponse(
                 group.id().toString(),
                 group.name(),

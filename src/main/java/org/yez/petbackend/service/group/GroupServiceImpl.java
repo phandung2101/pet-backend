@@ -24,12 +24,12 @@ final class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public Group getById(final UUID userId, final UUID groupId) {
+    public Group findOne(final UUID userId, final UUID groupId) {
         return groupQuery.findOne(userId, groupId);
     }
 
     @Override
-    public List<Group> getAll(final UUID userId) {
+    public List<Group> findAll(final UUID userId) {
         return groupQuery.findAll(userId);
     }
 

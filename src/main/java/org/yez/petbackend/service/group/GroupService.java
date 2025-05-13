@@ -11,9 +11,9 @@ public interface GroupService {
 
     Group create(CreateGroupRequest createGroupRequest, UUID ownerId);
 
-    Group getById(final UUID userId, UUID groupId);
+    Group findOne(final UUID userId, UUID groupId);
 
-    List<Group> getAll(UUID userId);
+    List<Group> findAll(UUID userId);
 
     void createDefault(UUID ownerId, String username);
 

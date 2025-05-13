@@ -34,7 +34,7 @@ class TransactionCommandImpl implements TransactionCommand {
     }
 
     @Override
-    public void modify(
+    public void update(
             final ModifyTransactionDto modifyTransactionDto
     ) {
         final var entity = transactionRepository.findByGroup_IdAndId(

@@ -1,7 +1,7 @@
 package org.yez.petbackend.service.transaction;
 
 import org.yez.petbackend.controller.transaction.CreateTransactionRequest;
-import org.yez.petbackend.controller.transaction.ModifyTransactionRequest;
+import org.yez.petbackend.controller.transaction.UpdateTransactionRequest;
 import org.yez.petbackend.domain.transaction.Transaction;
 
 import java.util.List;
@@ -15,13 +15,13 @@ public interface TransactionService {
             CreateTransactionRequest createTransactionRequest
     );
 
-    List<Transaction> getAll(UUID groupId);
+    List<Transaction> findAll(UUID groupId);
 
-    Transaction getOne(UUID groupId, UUID transactionId);
+    Transaction findOne(UUID groupId, UUID transactionId);
 
     void update(
             UUID groupId,
-            final UUID transactionId, ModifyTransactionRequest modifyTransactionRequest
+            final UUID transactionId, UpdateTransactionRequest updateTransactionRequest
     );
 
     void delete(

@@ -4,7 +4,7 @@ import org.yez.petbackend.domain.transaction.TransactionType;
 
 import java.time.Instant;
 
-public record ModifyTransactionRequest(
+public record UpdateTransactionRequest(
         float amount,
         String description,
         TransactionType type,
