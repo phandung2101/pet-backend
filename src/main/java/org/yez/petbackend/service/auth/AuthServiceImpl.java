@@ -13,6 +13,7 @@ import org.yez.petbackend.security.JwtService;
 import org.yez.petbackend.security.PetUser;
 import org.yez.petbackend.service.group.GroupService;
 
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,6 +56,17 @@ record AuthServiceImpl(
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         var userEntity = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("username not found"));
+        return createPetUser(userEntity);
+    }
+
+    @Override
+    public UserDetails loadUserById(final UUID userId) {
+        var userEntity = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("user id not found"));
+        return createPetUser(userEntity);
+    }
+
+    private PetUser createPetUser(UserEntity userEntity) {
         var user = new User(
                 userEntity.getId(),
                 userEntity.getUsername(),
